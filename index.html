@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCP Visor — Deterministic authorization for MCP tool calls</title>
+  <meta name="description" content="MCP Visor is a self-hosted policy enforcement proxy for AI agents. It evaluates every MCP tools/call before the request reaches the server — deterministically, without an LLM." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/src/styles/critical.css" />
+  <link rel="stylesheet" href="/src/styles/home.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="/">
+        <svg class="iris-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="16" cy="16" r="8.2" fill="none" stroke="currentColor" stroke-width="1" opacity="0.75"/>
+          <g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+            <path d="M16 4.8 L18.2 12.2"/><path d="M24.4 8.4 L19.4 13.6"/>
+            <path d="M27.2 16 L19.8 16"/><path d="M24.4 23.6 L19.4 18.4"/>
+            <path d="M16 27.2 L16 19.8"/><path d="M7.6 23.6 L12.6 18.4"/>
+            <path d="M4.8 16 L12.2 16"/><path d="M7.6 8.4 L12.6 13.6"/>
+          </g>
+          <circle cx="16" cy="16" r="3.1" fill="currentColor"/>
+        </svg>
+        <span class="brand-name">MCP<em>Visor</em></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#boundary">The boundary</a>
+        <a href="/doctrine">Doctrine</a>
+        <a href="/research">Research</a>
+        <a href="/install">Install</a>
+        <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub ↗</a>
+      </nav>
+      <a class="nav-cta" href="/install">Get started</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <canvas id="visor-lens" aria-hidden="true"></canvas>
+    <div class="hero-veil"></div>
+    <div class="wrap hero-copy">
+      <div class="hero-kicker">Deterministic authorization · No LLM in the loop</div>
+      <h1>Models can request actions.<br>Visor decides whether they are allowed.</h1>
+      <p class="hero-deck">MCP Visor is a self-hosted policy enforcement proxy for AI agents. It evaluates every MCP <code>tools/call</code> before the request reaches the server — deterministically, without an LLM.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/install">Install Visor</a>
+        <a class="btn btn-ghost" href="#boundary">See the boundary</a>
+      </div>
+      <div class="hero-install">
+        <span>Quickstart</span>
+        <span class="cmd-wrap">
+          <span class="cmd-line"><span class="prompt">$</span> go install github.com/themayursinha/mcp-visor/cmd/mcp-visor@latest</span>
+          <button class="cmd-copy" type="button" data-copy="go install github.com/themayursinha/mcp-visor/cmd/mcp-visor@latest">copy</button>
+        </span>
+      </div>
+    </div>
+    <aside class="walkthrough" aria-label="Illustrated policy walkthrough">
+      <div class="walkthrough-head">
+        <span class="walkthrough-title">Illustrated decision · visor serve --demo</span>
+        <span class="walk-tag">Walkthrough</span>
+      </div>
+      <div class="walkthrough-body">
+        <div class="t-dim">$ mcp-visor serve --demo</div>
+        <div class="t-dim">listening on 127.0.0.1:8443 · policy loaded</div>
+        <div class="trace-note">Request</div>
+        <div class="trace-row">
+          <div class="req"><span class="m">tools/call</span> file_read {path: "/app/.env"} <span class="trace-badge badge-deny">deny</span></div>
+          <div class="verdict">
+            <div class="v-deny">DENY — matched rule: deny_path</div>
+            <div class="v-why">Blocked because the requested path matches the protected-secret pattern <strong style="color:var(--ink);font-family:var(--mono);font-size:.9em;">**/.env</strong>.</div>
+            <div class="v-fields">
+              <span class="f-k">Matched</span><span class="f-v">/app/.env → **/.env</span>
+              <span class="f-k">Action</span><span class="f-v">fail closed · no relay</span>
+              <span class="f-k">Audit</span><span class="f-v">deny committed</span>
+            </div>
+          </div>
+        </div>
+        <div class="trace-note" style="margin-top:14px;">policy: <span class="t-acc">default_action deny</span> · this panel is an illustration, not a live proxy</div>
+        <div class="audit-line">audit: <span class="a-id">a-7f3c21</span> · deny committed · walkthrough</div>
+      </div>
+    </aside>
+  </section>
+
+  <div class="proof">
+    <div class="wrap proof-inner">
+      <span>Production enforcement layer</span>
+      <span class="proof-dot">·</span>
+      <span>Go 1.26+ single static binary</span>
+      <span class="proof-dot">·</span>
+      <span>MIT</span>
+      <span class="proof-dot">·</span>
+      <span>eval before relay</span>
+      <span class="proof-dot">·</span>
+      <span>audit before action</span>
+      <span class="proof-dot">·</span>
+      <span>fail closed</span>
+    </div>
+  </div>
+
+  <section id="boundary" class="chapter boundary">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">The boundary</div>
+        <h2>Prompt-only controls are useful guidance. They are not an execution boundary.</h2>
+      </div>
+      <div class="boundary-grid">
+        <div data-reveal>
+          <p class="pitch">Agents can now read files, call APIs, run commands, and modify infrastructure through MCP tools. A natural-language warning provides <strong>weak assurance</strong> the moment the model is confused, injected, or adversarial.</p>
+          <p class="body-copy">Visor sits between the AI client and the MCP server. The agent requests an action; Visor evaluates policy before the request reaches the tool. Unknown tools fail closed. Sensitive paths are blocked by pattern. A read followed by an outbound send is denied as a chain. High-risk actions wait for approval.</p>
+        </div>
+        <div class="policy-card" data-reveal>
+          <div class="policy-head">policy.yaml · default_action: deny</div>
+          <div class="policy-yaml">
+<span class="y-key">version</span>: <span class="y-str">"1.0"</span><br>
+<span class="y-key">default_action</span>: <span class="y-deny">deny</span><br>
+<br>
+<span class="y-key">servers</span>:<br>
+&nbsp;&nbsp;- <span class="y-key">name</span>: <span class="y-str">"filesystem"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="y-key">allowed</span>: <span class="y-allow">true</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="y-key">tools</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="y-key">name</span>: <span class="y-str">"file_read"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="y-key">rules</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="y-key">type</span>: <span class="y-str">deny_path</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="y-key">patterns</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="y-str">"**/.env"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="y-str">"**/*.pem"</span><br>
+<br>
+<span class="y-key">tool_chains</span>:<br>
+&nbsp;&nbsp;- <span class="y-key">name</span>: <span class="y-str">"prevent_exfiltration"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="y-key">sources</span>: <span class="y-str">"file_read"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="y-key">sinks</span>: <span class="y-str">"http_post"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="y-key">action</span>: <span class="y-deny">deny</span> <span class="y-com"># within window</span>
+          </div>
+        </div>
+      </div>
+      <div class="topology" data-reveal>
+        <div class="topo-head">The boundary, drawn</div>
+        <div class="topo-flow">
+          <div class="topo-node">
+            <div class="t-label">Agent</div>
+            <div class="t-name">Requests</div>
+            <div class="t-sub">tools/call</div>
+          </div>
+          <div class="topo-arrow"><span>→</span><span class="a-cap">eval</span></div>
+          <div class="topo-node visor">
+            <div class="t-label">Visor</div>
+            <div class="t-name">Policy decision</div>
+            <div class="t-sub">deterministic · no LLM</div>
+          </div>
+          <div class="topo-arrow"><span>→</span><span class="a-cap">relay</span></div>
+          <div class="topo-node">
+            <div class="t-label">Server</div>
+            <div class="t-name">Receives</div>
+            <div class="t-sub">only allowed calls</div>
+          </div>
+        </div>
+        <div class="topo-legend">
+          <span><span class="lg-deny">denied</span> — never relayed, audit committed</span>
+          <span><span class="lg-allow">allowed</span> — audit fsynced before relay</span>
+          <span><span class="lg-vis">Visor</span> — the action boundary</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chain" class="chapter chain">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">The chain</div>
+        <h2>What the agent does. What Visor decides.</h2>
+      </div>
+      <div class="chain-flow" data-reveal>
+        <div class="chain-node">
+          <div class="n-label">1 · Agent</div>
+          <div class="n-title">Requests an action</div>
+          <div class="n-desc">A valid JSON-RPC tools/call with an id arrives at the proxy.</div>
+        </div>
+        <div class="chain-arrow"><span>→</span></div>
+        <div class="chain-node">
+          <div class="n-label">2 · Policy</div>
+          <div class="n-title">Rules are evaluated</div>
+          <div class="n-desc">Allow, deny, approval, redaction, chain, and session-taint rules run in order.</div>
+        </div>
+        <div class="chain-arrow"><span>→</span></div>
+        <div class="chain-node hot">
+          <div class="n-label">3 · Visor</div>
+          <div class="n-title">Deterministic decision</div>
+          <div class="n-desc">No LLM in the loop. The same input always produces the same decision.</div>
+        </div>
+        <div class="chain-arrow"><span>→</span></div>
+        <div class="chain-node">
+          <div class="n-label">4 · Server</div>
+          <div class="n-title">Only allowed calls relay</div>
+          <div class="n-desc">Audit is durably committed before any request reaches the MCP server.</div>
+        </div>
+      </div>
+      <div class="chain-note">Notification-form tools/call is dropped without response. Duplicate method keys and JSON-RPC batches containing tools/call are blocked before relay.</div>
+    </div>
+  </section>
+
+  <section id="enforce" class="chapter enforce">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">Enforcement</div>
+        <h2>What the proxy actually enforces</h2>
+      </div>
+      <div class="enforce-grid" data-reveal>
+        <div class="enforce-item">
+          <h3>allow / deny</h3>
+          <p>Every tools/call is matched against server, tool, and argument rules before relay. Unknown tools fail closed by default.</p>
+        </div>
+        <div class="enforce-item">
+          <h3>approval</h3>
+          <p>High-risk actions wait for explicit human approval instead of proceeding on model intent alone.</p>
+        </div>
+        <div class="enforce-item">
+          <h3>redaction</h3>
+          <p>Sensitive fields can be redacted from tool arguments and responses before they cross the boundary.</p>
+        </div>
+        <div class="enforce-item">
+          <h3>chains &amp; taint</h3>
+          <p>A read followed by an outbound send is denied as a chain. Session state tracks taint across the conversation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fail">
+    <div class="wrap fail-inner">
+      <div data-reveal>
+        <h2>An allowed action that cannot prove itself is a <span class="deny-italic">denial</span>.</h2>
+        <p>Visor will not relay a valid tool call unless its final allow record has been durably committed to the configured audit sink. A marshal error, short write, sync failure, or closed file converts the call to a denial with zero relay.</p>
+      </div>
+      <div class="fail-code" data-reveal>
+        <span class="t-dim"># invariant T-AUDIT-001</span><br>
+        <span class="t-ink">on allow: </span><span class="t-acc">append_record</span><span class="t-dim">(sink)</span><br>
+        <span class="t-ink">required: </span><span class="t-acc">full_write</span> + <span class="t-acc">fsync</span><br>
+        <span class="t-ink">on failure → </span><span class="t-no">deny, zero relay</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-band">
+    <div class="wrap" data-reveal>
+      <blockquote>MCP Visor is not a model guardrail. It is an <span class="hl">action boundary</span>. Models can request actions. Visor decides whether those actions are allowed.</blockquote>
+      <div class="who">README · github.com/themayursinha/mcp-visor</div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap cta-inner">
+      <div data-reveal>
+        <h2>Put the boundary between your agent and your infrastructure.</h2>
+        <p>Self-hosted, open source, deterministic. No model in the decision path, no telemetry leaving your network.</p>
+        <div class="cta-actions">
+          <a class="btn btn-primary" href="/install">Install Visor</a>
+          <a class="btn btn-ghost" href="/doctrine">Read the doctrine</a>
+        </div>
+      </div>
+      <div class="cta-install" data-reveal>
+        <span class="prompt">$</span> <span class="cmd">go install github.com/themayursinha/mcp-visor/cmd/mcp-visor@latest</span><br>
+        <span class="prompt">$</span> <span class="cmd">mcp-visor serve --demo</span><br>
+        <span class="t-dim" style="color:var(--ink-faint);">pre-built binaries + checksums on Releases</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="f-note">MCP Visor · deterministic authorization for MCP tool calls</div>
+      <div class="f-links">
+        <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub</a>
+        <a href="/doctrine">Doctrine</a>
+        <a href="/research">Research</a>
+        <a href="https://themayursinha.com/architecture/2026/06/27/spec-engineering-the-missing-layer-in-ai-agent-security/" target="_blank" rel="noopener">Spec engineering</a>
+        <a href="https://github.com/themayursinha/mcp-visor/blob/main/docs/threat-model.md" target="_blank" rel="noopener">Threat model</a>
+      </div>
+    </div>
+  </footer>
+  <script type="module" src="/src/home.ts"></script>
+</body>
+</html>

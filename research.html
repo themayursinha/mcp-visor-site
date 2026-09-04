@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trust Plane research — MCP Visor</title>
+  <meta name="description" content="MCP Visor is the production enforcement layer of a research program on governing autonomous agents at the boundary." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/src/styles/critical.css" />
+  <link rel="stylesheet" href="/src/styles/pages.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="/">
+        <svg class="iris-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="16" cy="16" r="8.2" fill="none" stroke="currentColor" stroke-width="1" opacity="0.75"/>
+          <g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+            <path d="M16 4.8 L18.2 12.2"/><path d="M24.4 8.4 L19.4 13.6"/>
+            <path d="M27.2 16 L19.8 16"/><path d="M24.4 23.6 L19.4 18.4"/>
+            <path d="M16 27.2 L16 19.8"/><path d="M7.6 23.6 L12.6 18.4"/>
+            <path d="M4.8 16 L12.2 16"/><path d="M7.6 8.4 L12.6 13.6"/>
+          </g>
+          <circle cx="16" cy="16" r="3.1" fill="currentColor"/>
+        </svg>
+        <span class="brand-name">MCP<em>Visor</em></span>
+      </a>
+      <nav class="nav-links">
+        <a href="/#boundary">The boundary</a>
+        <a href="/doctrine">Doctrine</a>
+        <a href="/research" aria-current="page">Research</a>
+        <a href="/install">Install</a>
+        <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub ↗</a>
+      </nav>
+      <a class="nav-cta" href="/install">Get started</a>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="sec-label">Research program</div>
+      <h1>Three prototypes, one question: how do you govern what an agent can reach?</h1>
+      <p class="lede">MCP Visor is the production enforcement layer of a broader research program on governing autonomous agents at the boundary. The other two artifacts are deterministic prototypes. They are not shipping product, and they are not integrated into the Visor proxy.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="wrap">
+      <div class="trio-grid" data-reveal>
+        <a class="trio-card" href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">
+          <div class="q">What may an agent do?</div>
+          <div class="t">MCP Visor</div>
+          <div class="s">Deterministic runtime policy at the MCP tools/call boundary. Allow, deny, approval, redaction, chains, session taint. No LLM in the decision path.</div>
+          <div class="st st-prod">Production</div>
+        </a>
+        <a class="trio-card" href="https://github.com/themayursinha/authority-graph-simulator" target="_blank" rel="noopener">
+          <div class="q">What authority can an agent reach?</div>
+          <div class="t">Authority Graph Simulator</div>
+          <div class="s">Counterfactual delegation analysis of reachable authority. A separate public prototype, kept split from the proxy on purpose.</div>
+          <div class="st st-proto">Prototype</div>
+        </a>
+        <a class="trio-card" href="https://github.com/themayursinha/capability-delta-receipts" target="_blank" rel="noopener">
+          <div class="q">What capability can an agent acquire?</div>
+          <div class="t">Capability Delta Receipts</div>
+          <div class="s">Trajectory-level capability accounting as agents discover new powers — even when nominal permissions are unchanged.</div>
+          <div class="st st-proto">Prototype</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" style="padding-top:0;">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">Applied AI control</div>
+        <h2>Alignment tries to make the agent want the right thing. Control ensures wanting is never sufficient authority.</h2>
+        <p>MCP Visor does not align a model’s values, goals, or internal reasoning. It assumes the model may hallucinate, become compromised, follow malicious instructions, or act contrary to operator intent — then limits what it can actually do. That is applied AI safety and AI control, not classical alignment.</p>
+      </div>
+      <p class="note-box" data-reveal>
+        Architecture: Model proposes → Policy authorizes → Proxy enforces → Audit records. The Trust Plane thesis — that authorization must be re-evaluated when an agent materially increases its effective capabilities — is a research program. It is not a current Visor runtime claim.
+      </p>
+    </div>
+  </section>
+
+  <section class="chapter" style="border-top:1px solid var(--rule);">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">What this is not</div>
+        <h2>Narrow claims are a security property.</h2>
+        <p>Visor does not enforce arbitrary host filesystem, network, or non-MCP actions. Session taints and chains are in-memory and die on restart. Optional stdio identity pinning does not cover transitive imports, TOCTOU, or TPM/TEE. Roadmap language — protocol-agnostic adapters, distributed kill switch, signed capability artifacts — stays roadmap until it is built.</p>
+      </div>
+      <div class="cta-actions" data-reveal>
+        <a class="btn btn-primary" href="/install">Install the proxy</a>
+        <a class="btn btn-ghost" href="https://www.researchgate.net/publication/407908047" target="_blank" rel="noopener">Read the paper</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="f-note">MCP Visor · deterministic authorization for MCP tool calls</div>
+      <div class="f-links">
+        <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub</a>
+        <a href="/doctrine">Doctrine</a>
+        <a href="https://themayursinha.com/architecture/2026/06/27/spec-engineering-the-missing-layer-in-ai-agent-security/" target="_blank" rel="noopener">Spec engineering</a>
+      </div>
+    </div>
+  </footer>
+  <script type="module" src="/src/page.ts"></script>
+</body>
+</html>

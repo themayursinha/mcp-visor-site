@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Least Agency — MCP Visor</title>
+  <meta name="description" content="Least Agency: never trust autonomous intent. Always verify action authority at execution time. MCP Visor is an open proof of that doctrine." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/src/styles/critical.css" />
+  <link rel="stylesheet" href="/src/styles/pages.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="/">
+        <svg class="iris-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="16" cy="16" r="8.2" fill="none" stroke="currentColor" stroke-width="1" opacity="0.75"/>
+          <g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+            <path d="M16 4.8 L18.2 12.2"/><path d="M24.4 8.4 L19.4 13.6"/>
+            <path d="M27.2 16 L19.8 16"/><path d="M24.4 23.6 L19.4 18.4"/>
+            <path d="M16 27.2 L16 19.8"/><path d="M7.6 23.6 L12.6 18.4"/>
+            <path d="M4.8 16 L12.2 16"/><path d="M7.6 8.4 L12.6 13.6"/>
+          </g>
+          <circle cx="16" cy="16" r="3.1" fill="currentColor"/>
+        </svg>
+        <span class="brand-name">MCP<em>Visor</em></span>
+      </a>
+      <nav class="nav-links">
+        <a href="/#boundary">The boundary</a>
+        <a href="/doctrine" aria-current="page">Doctrine</a>
+        <a href="/research">Research</a>
+        <a href="/install">Install</a>
+        <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub ↗</a>
+      </nav>
+      <a class="nav-cta" href="/install">Get started</a>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="sec-label">Doctrine</div>
+      <h1>Never trust autonomous intent. Always verify action authority at execution time.</h1>
+      <p class="lede">Zero Trust was built for human and service identity. Autonomous agents need Least Agency. This is a doctrine, not a product. MCP Visor is an open-source proof of the enforcement point the doctrine requires.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">The shift</div>
+        <h2>Standing permission answers whether the actor can act. It does not answer whether this act is appropriate now.</h2>
+        <p>Agents read files, call tools, create tickets, run code, and send messages. In that world the unit of risk is the tool call, not the login. A valid credential can still cause harm — by injection, by a misread tool description, or by chaining allowed functions into an unsafe outcome.</p>
+      </div>
+      <div class="split" data-reveal>
+        <div class="split-pane">
+          <h3>Zero Trust</h3>
+          <p class="axiom">Never trust identity. Always verify access.</p>
+          <p style="margin-top:16px;">OAuth, JWT, and RBAC can prove which integration is calling. They do not prove whether the action is safe in the current agentic context.</p>
+        </div>
+        <div class="split-pane">
+          <h3>Least Agency</h3>
+          <p class="axiom">Never trust autonomous intent. Always verify action authority at execution time.</p>
+          <p style="margin-top:16px;">Agents should not carry broad ambient authority. Every action should be narrow, contextual, revocable, and auditable at execution time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" style="padding-top:0;">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">A least-agency decision</div>
+        <h2>Each action is a separate decision, bound to context.</h2>
+      </div>
+      <div class="bind-list" data-reveal>
+        <div class="bind-item"><div class="k">Actor</div><p>The agent, session, user, or delegated workflow.</p></div>
+        <div class="bind-item"><div class="k">Action</div><p>The tool method or operation being requested.</p></div>
+        <div class="bind-item"><div class="k">Target</div><p>The resource, parameter, record, or endpoint.</p></div>
+        <div class="bind-item"><div class="k">Constraints</div><p>Arguments, rate, time, approval, classification, source.</p></div>
+        <div class="bind-item"><div class="k">Evidence</div><p>Request context, prior actions, and policy state.</p></div>
+        <div class="bind-item"><div class="k">Expiry</div><p>The grant ends when the task ends. Authority does not linger.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" style="border-top:1px solid var(--rule);">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">Why deterministic</div>
+        <h2>A model should not be the only thing standing between an agent and an irreversible action.</h2>
+        <p>Model-based guardrails can classify prompts and summarize risk. They should not be the final enforcement boundary for high-impact actions. Models are probabilistic. They can be influenced by the input they are asked to police. They can fail silently. They cannot provide a strong denial guarantee.</p>
+      </div>
+      <p class="note-box" data-reveal>A deterministic enforcement point does not ask whether the agent sounds safe. It asks whether the request matches policy — and it can deny because the tool, target, sequence, or approval is wrong, then log the exact request and decision.</p>
+    </div>
+  </section>
+
+  <section class="chapter" style="border-top:1px solid var(--rule);">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">The open proof</div>
+        <h2>MCP Visor is not the doctrine. It is a reference implementation of a least-agency choke point for MCP traffic.</h2>
+        <p>The Model Context Protocol standardizes how agents invoke tools. If that traffic passes through a controlled proxy, policy can be evaluated before the tool server executes the request. Placement is the point: if enforcement happens after the tool has executed, it becomes monitoring. Monitoring does not prevent harm.</p>
+      </div>
+      <p class="note-box" data-reveal>What stays open: the proxy, the policy evaluation path, the local audit log, extension points, and the test suite for bypasses. A fleet control plane is a later, pull-based possibility — not a current claim, and not a substitute for an inspectable enforcement core.</p>
+      <div class="cta-actions" style="margin-top:36px;" data-reveal>
+        <a class="btn btn-primary" href="/">See the product</a>
+        <a class="btn btn-ghost" href="/research">Research program</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="f-note">MCP Visor · deterministic authorization for MCP tool calls</div>
+      <div class="f-links">
+        <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub</a>
+        <a href="/research">Research</a>
+        <a href="/install">Install</a>
+        <a href="https://github.com/themayursinha/mcp-visor/blob/main/docs/threat-model.md" target="_blank" rel="noopener">Threat model</a>
+      </div>
+    </div>
+  </footer>
+  <script type="module" src="/src/page.ts"></script>
+</body>
+</html>

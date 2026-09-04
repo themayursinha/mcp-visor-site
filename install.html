@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Install — MCP Visor</title>
+  <meta name="description" content="Install MCP Visor. Self-hosted, open source, deterministic. No model in the decision path." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/src/styles/critical.css" />
+  <link rel="stylesheet" href="/src/styles/pages.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="/">
+        <svg class="iris-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" fill="none" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="16" cy="16" r="8.2" fill="none" stroke="currentColor" stroke-width="1" opacity="0.75"/>
+          <g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round">
+            <path d="M16 4.8 L18.2 12.2"/><path d="M24.4 8.4 L19.4 13.6"/>
+            <path d="M27.2 16 L19.8 16"/><path d="M24.4 23.6 L19.4 18.4"/>
+            <path d="M16 27.2 L16 19.8"/><path d="M7.6 23.6 L12.6 18.4"/>
+            <path d="M4.8 16 L12.2 16"/><path d="M7.6 8.4 L12.6 13.6"/>
+          </g>
+          <circle cx="16" cy="16" r="3.1" fill="currentColor"/>
+        </svg>
+        <span class="brand-name">MCP<em>Visor</em></span>
+      </a>
+      <nav class="nav-links">
+        <a href="/#boundary">The boundary</a>
+        <a href="/doctrine">Doctrine</a>
+        <a href="/research">Research</a>
+        <a href="/install" aria-current="page">Install</a>
+        <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub ↗</a>
+      </nav>
+      <a class="nav-cta" href="#quickstart">Get started</a>
+    </div>
+  </header>
+
+  <section class="page-hero" id="quickstart">
+    <div class="wrap">
+      <div class="sec-label">Install</div>
+      <h1>Put the boundary between your agent and your infrastructure.</h1>
+      <p class="lede">Self-hosted, open source, deterministic. No model in the decision path, no telemetry leaving your network. Go 1.26+.</p>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="wrap">
+      <div class="install-stack" data-reveal>
+        <div class="install-card">
+          <span class="prompt">$</span> go install github.com/themayursinha/mcp-visor/cmd/mcp-visor@latest
+          <button class="cmd-copy" type="button" data-copy="go install github.com/themayursinha/mcp-visor/cmd/mcp-visor@latest" style="margin-left:12px;vertical-align:middle;">copy</button>
+          <div class="hint">or take a pre-built binary and checksum from Releases</div>
+        </div>
+        <div class="install-card">
+          <span class="prompt">$</span> mcp-visor serve --demo<br>
+          <span class="prompt">$</span> mcp-visor serve -server &lt;your-mcp-server&gt; -policy policy.yaml -audit-log ./audit.jsonl
+          <div class="hint">Allows fail closed unless -audit-log points at a writable JSONL file.</div>
+        </div>
+      </div>
+      <div class="link-row" data-reveal>
+        <a class="btn btn-primary" href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub repository</a>
+        <a class="btn btn-ghost" href="https://github.com/themayursinha/mcp-visor/releases" target="_blank" rel="noopener">Releases &amp; checksums</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" style="border-top:1px solid var(--rule);">
+    <div class="wrap">
+      <div class="sec-head" data-reveal>
+        <div class="sec-label">Read next</div>
+        <h2>Policy, threat model, and the missing layer.</h2>
+      </div>
+      <div class="bind-list" data-reveal>
+        <div class="bind-item">
+          <div class="k">Threat model</div>
+          <p><a href="https://github.com/themayursinha/mcp-visor/blob/main/docs/threat-model.md" target="_blank" rel="noopener">What Visor claims, and what it does not.</a></p>
+        </div>
+        <div class="bind-item">
+          <div class="k">Policy model</div>
+          <p><a href="https://github.com/themayursinha/mcp-visor/blob/main/docs/policy-model.md" target="_blank" rel="noopener">How YAML becomes a deterministic decision.</a></p>
+        </div>
+        <div class="bind-item">
+          <div class="k">Spec engineering</div>
+          <p><a href="https://themayursinha.com/architecture/2026/06/27/spec-engineering-the-missing-layer-in-ai-agent-security/" target="_blank" rel="noopener">The missing layer in agent security.</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="f-note">MCP Visor · deterministic authorization for MCP tool calls</div>
+      <div class="f-links">
+        <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub</a>
+        <a href="/doctrine">Doctrine</a>
+        <a href="/research">Research</a>
+        <a href="https://github.com/themayursinha/mcp-visor/blob/main/docs/policy-model.md" target="_blank" rel="noopener">Policy model</a>
+      </div>
+    </div>
+  </footer>
+  <script type="module" src="/src/page.ts"></script>
+</body>
+</html>
