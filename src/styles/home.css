@@ -21,8 +21,8 @@
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(18, 16, 12, 0.82) 0%, rgba(18, 16, 12, 0.28) 48%, rgba(18, 16, 12, 0.04) 72%),
-    linear-gradient(180deg, rgba(18, 16, 12, 0.08) 0%, rgba(18, 16, 12, 0.42) 100%);
+    linear-gradient(90deg, color-mix(in srgb, var(--bg) 82%, transparent) 0%, color-mix(in srgb, var(--bg) 28%, transparent) 48%, color-mix(in srgb, var(--bg) 4%, transparent) 72%),
+    linear-gradient(180deg, color-mix(in srgb, var(--bg) 8%, transparent) 0%, color-mix(in srgb, var(--bg) 42%, transparent) 100%);
   pointer-events: none;
 }
 
@@ -99,7 +99,7 @@
   background: color-mix(in srgb, var(--surface) 92%, transparent);
   border: 1px solid var(--rule);
   border-radius: 8px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 24px 60px var(--shadow);
   font-family: var(--mono);
   font-size: 12.5px;
   line-height: 1.7;
@@ -129,8 +129,8 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
-  border: 1px solid #443824;
-  background: #2c2519;
+  border: 1px solid var(--hot-border);
+  background: var(--surface-2);
   padding: 2px 7px;
   border-radius: 2px;
 }
@@ -167,8 +167,8 @@
 
 .badge-deny {
   color: var(--deny);
-  border: 1px solid #5c3a35;
-  background: #35201d;
+  border: 1px solid color-mix(in srgb, var(--deny) 45%, var(--surface));
+  background: color-mix(in srgb, var(--deny) 16%, var(--surface));
 }
 
 .req {
@@ -306,7 +306,7 @@ section.chapter { padding: 88px 0; }
 }
 
 .y-com { color: var(--ink-faint); }
-.y-key { color: #c9b394; }
+.y-key { color: var(--accent-strong); }
 .y-str { color: var(--accent-strong); }
 .y-allow { color: var(--allow); }
 .y-deny { color: var(--deny); }
@@ -355,7 +355,7 @@ section.chapter { padding: 88px 0; }
 .topo-node .t-sub { margin-top: 6px; font-size: 12.5px; color: var(--ink-dim); font-family: var(--mono); }
 
 .topo-node.visor {
-  border-color: #4a3d28;
+  border-color: var(--hot-border);
   background: var(--surface-2);
   position: relative;
 }
@@ -429,7 +429,7 @@ section.chapter { padding: 88px 0; }
 .chain-node .n-desc { margin-top: 8px; font-size: 14.5px; color: var(--ink-dim); line-height: 1.5; }
 
 .chain-node.hot {
-  border-color: #4a3d28;
+  border-color: var(--hot-border);
   background: var(--surface-2);
 }
 
@@ -604,7 +604,7 @@ section.chapter { padding: 88px 0; }
   .hero { min-height: auto; padding-top: 24px; }
   #visor-lens { position: relative; height: 52vh; min-height: 280px; }
   .hero-veil {
-    background: linear-gradient(180deg, rgba(18,16,12,0.15) 0%, rgba(18,16,12,0.92) 70%);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 15%, transparent) 0%, color-mix(in srgb, var(--bg) 92%, transparent) 70%);
   }
   .hero-copy { padding: 24px 0 32px; }
   .walkthrough {

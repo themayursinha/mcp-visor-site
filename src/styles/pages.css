@@ -106,7 +106,7 @@
   transition: border-color 0.2s;
 }
 
-.trio-card:hover { border-color: #4a3d28; }
+.trio-card:hover { border-color: var(--hot-border); }
 
 .trio-card .q {
   font-family: var(--mono);

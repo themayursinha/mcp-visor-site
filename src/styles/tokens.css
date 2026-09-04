@@ -1,4 +1,6 @@
-:root {
+:root,
+html[data-theme="dark"] {
+  color-scheme: dark;
   --bg: #12100c;
   --surface: #1a1713;
   --surface-2: #221e18;
@@ -11,9 +13,29 @@
   --deny: #d0655a;
   --rule: #332d24;
   --rule-soft: #2a251e;
+  --hot-border: #4a3d28;
+  --shadow: rgb(0 0 0 / 0.45);
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --radius: 4px;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f3eee6;
+  --surface: #faf7f1;
+  --surface-2: #ebe4d8;
+  --ink: #1c1812;
+  --ink-dim: #5c5348;
+  --ink-faint: #8a8073;
+  --accent: #8f6a45;
+  --accent-strong: #6f5134;
+  --allow: #3f6b38;
+  --deny: #b4453b;
+  --rule: #d9d0c3;
+  --rule-soft: #e6dfd4;
+  --hot-border: #c4aa86;
+  --shadow: rgb(28 24 18 / 0.14);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,6 +70,10 @@ a { color: inherit; }
   max-width: 1160px;
   margin: 0 auto;
   padding: 0 32px;
+}
+
+html[data-theme="light"] .grain {
+  opacity: 0.045;
 }
 
 .grain {

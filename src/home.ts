@@ -1,5 +1,7 @@
 import { bindCopyButtons, onHeroScroll, prefersReducedMotion } from "./lib/dom";
+import { bindThemeToggle } from "./lib/theme";
 
+bindThemeToggle();
 bindCopyButtons();
 
 const canvas = document.querySelector<HTMLCanvasElement>("#visor-lens");

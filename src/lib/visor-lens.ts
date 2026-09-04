@@ -107,6 +107,24 @@ export function mountVisorLens(
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x12100c, 0.032);
 
+  function cssToken(name: string, fallback: string): string {
+    const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return raw || fallback;
+  }
+
+  function cssHex(name: string, fallback: number): number {
+    const raw = cssToken(name, "");
+    const hex = /^#([0-9a-f]{6})$/i.exec(raw);
+    if (hex) return parseInt(hex[1], 16);
+    const rgb = /^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i.exec(raw);
+    if (rgb) return (Number(rgb[1]) << 16) + (Number(rgb[2]) << 8) + Number(rgb[3]);
+    return fallback;
+  }
+
+  function isLightTheme(): boolean {
+    return document.documentElement.getAttribute("data-theme") === "light";
+  }
+
   const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 50);
   camera.position.set(3.6, 1.35, 6.4);
   camera.lookAt(0.15, -0.12, 0);
@@ -201,16 +219,16 @@ export function mountVisorLens(
 
   function drawPlate(lit: boolean): void {
     if (!pctx) return;
-    pctx.fillStyle = "#12100c";
+    pctx.fillStyle = cssToken("--bg", "#12100c");
     pctx.fillRect(0, 0, 1024, 192);
-    pctx.strokeStyle = lit ? "#d0655a" : "#332d24";
+    pctx.strokeStyle = lit ? cssToken("--deny", "#d0655a") : cssToken("--rule", "#332d24");
     pctx.lineWidth = 3;
     pctx.strokeRect(10, 10, 1004, 172);
     pctx.font = "28px monospace";
-    pctx.fillStyle = lit ? "#d0655a" : "#857b6c";
+    pctx.fillStyle = lit ? cssToken("--deny", "#d0655a") : cssToken("--ink-faint", "#857b6c");
     pctx.fillText("WALKTHROUGH  ·  DENY  ·  deny_path  **/.env", 40, 80);
     pctx.font = "22px monospace";
-    pctx.fillStyle = lit ? "#c39f77" : "#5c5348";
+    pctx.fillStyle = lit ? cssToken("--accent", "#c39f77") : cssToken("--ink-dim", "#5c5348");
     pctx.fillText("fail closed  ·  no relay  ·  audit committed", 40, 128);
     plateTex.needsUpdate = true;
   }
@@ -301,6 +319,23 @@ export function mountVisorLens(
   denyLight.position.set(0, 0, 0.4);
   root.add(denyLight);
 
+  function applySceneTheme(): void {
+    const bg = cssHex("--bg", 0x12100c);
+    renderer.setClearColor(bg, 1);
+    if (scene.fog instanceof THREE.FogExp2) {
+      scene.fog.color.setHex(bg);
+      scene.fog.density = isLightTheme() ? 0.018 : 0.032;
+    }
+    const light = isLightTheme();
+    const pMat = particles.material as THREE.PointsMaterial;
+    pMat.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
+    pMat.opacity = light ? 0.5 : 0.7;
+    pMat.color.setHex(cssHex("--accent-strong", 0xe0c39b));
+    beamMat.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
+    (ghost.material as THREE.MeshBasicMaterial).color.setHex(cssHex("--rule", 0x332d24));
+    drawPlate(plateLit);
+  }
+
   let irisOpen = 0.72;
   let heroProgress = 0;
   let running = true;
@@ -352,6 +387,9 @@ export function mountVisorLens(
   resize();
 
   let plateLit = false;
+  applySceneTheme();
+  const themeObs = new MutationObserver(applySceneTheme);
+  themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   let frameN = 0;
   let inView = true;
 
@@ -440,6 +478,7 @@ export function mountVisorLens(
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
+      themeObs.disconnect();
       document.removeEventListener("visibilitychange", onVis);
       renderer.dispose();
       barrel.geometry.dispose();
