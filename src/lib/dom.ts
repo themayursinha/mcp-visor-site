@@ -1,3 +1,30 @@
+export function bindNavToggle(): void {
+  const btn = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  const nav = document.getElementById("site-nav");
+  if (!btn || !nav) return;
+
+  const setOpen = (open: boolean) => {
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    nav.classList.toggle("is-open", open);
+  };
+
+  btn.addEventListener("click", () => {
+    setOpen(btn.getAttribute("aria-expanded") !== "true");
+  });
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => setOpen(false));
+  });
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") setOpen(false);
+  });
+  const desktop = window.matchMedia("(min-width: 921px)");
+  const onDesktop = () => {
+    if (desktop.matches) setOpen(false);
+  };
+  desktop.addEventListener("change", onDesktop);
+}
+
 export function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }

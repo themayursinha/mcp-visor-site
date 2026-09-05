@@ -10,7 +10,7 @@
     })();
   </script>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Least Agency — MCP Visor</title>
   <meta name="description" content="Least Agency: never trust autonomous intent. Always verify action authority at execution time. MCP Visor is an open proof of that doctrine." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -35,7 +35,7 @@
         </svg>
         <span class="brand-name">MCP<em>Visor</em></span>
       </a>
-      <nav class="nav-links">
+      <nav class="nav-links" id="site-nav">
         <a href="/#boundary">The boundary</a>
         <a href="/doctrine" aria-current="page">Doctrine</a>
         <a href="/research">Research</a>
@@ -43,6 +43,9 @@
         <a href="https://github.com/themayursinha/mcp-visor" target="_blank" rel="noopener">GitHub ↗</a>
       </nav>
       <div class="nav-end">
+        <button type="button" class="nav-menu" data-nav-toggle aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
         <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to light theme">
           <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/>

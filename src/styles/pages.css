@@ -177,4 +177,32 @@
   .split,
   .bind-list,
   .trio-grid { grid-template-columns: 1fr; }
+
+  .page-hero {
+    padding: 48px 0 32px;
+  }
+
+  .page-hero h1 {
+    font-size: clamp(28px, 8vw, 44px);
+  }
+
+  .page-hero .lede {
+    font-size: 17px;
+  }
+
+  .chapter { padding: 56px 0; }
+
+  .split-pane { padding: 24px 20px; }
+
+  .install-card {
+    overflow-x: auto;
+    font-size: 12.5px;
+    padding: 18px 16px;
+    overflow-wrap: anywhere;
+  }
+
+  .link-row .btn {
+    flex: 1 1 12rem;
+    text-align: center;
+  }
 }
