@@ -338,6 +338,7 @@ export function mountVisorLens(
 
   let irisOpen = 0.72;
   let heroProgress = 0;
+  let compactView = false;
   let running = true;
   let raf = 0;
   const clock = new THREE.Clock();
@@ -372,18 +373,29 @@ export function mountVisorLens(
   }
 
   function resize(): void {
-    const parent = canvas.parentElement ?? canvas;
-    const w = parent.clientWidth || window.innerWidth;
-    const h = parent.clientHeight || window.innerHeight;
+    const w = Math.max(1, canvas.clientWidth);
+    const h = Math.max(1, canvas.clientHeight);
     const dpr = Math.min(window.devicePixelRatio || 1, 1.25);
     renderer.setPixelRatio(dpr);
     renderer.setSize(w, h, false);
-    camera.aspect = w / Math.max(h, 1);
+    camera.aspect = w / h;
+    compactView = w <= 920;
+    if (compactView) {
+      camera.fov = 33;
+      camera.position.set(0.12, 0.08, 4.35);
+      camera.lookAt(0, -0.02, 0);
+      plate.visible = false;
+    } else {
+      camera.fov = 28;
+      camera.position.set(3.6, 1.35, 6.4);
+      camera.lookAt(0.15, -0.12, 0);
+      plate.visible = true;
+    }
     camera.updateProjectionMatrix();
   }
 
   const ro = new ResizeObserver(resize);
-  ro.observe(canvas.parentElement ?? canvas);
+  ro.observe(canvas);
   resize();
 
   let plateLit = false;
@@ -425,8 +437,10 @@ export function mountVisorLens(
       applyIris(irisOpen);
     }
 
-    root.rotation.y = -0.62 + Math.sin(elapsed * 0.12) * 0.035;
-    root.rotation.x = 0.18 + Math.cos(elapsed * 0.09) * 0.018;
+    const yBase = compactView ? -0.16 : -0.62;
+    const xBase = compactView ? 0.08 : 0.18;
+    root.rotation.y = yBase + Math.sin(elapsed * 0.12) * 0.035;
+    root.rotation.x = xBase + Math.cos(elapsed * 0.09) * 0.018;
 
     const seq = opts.reducedMotion
       ? { travel: 1, kill: 0.15, pulse: 0.55, plate: 1 }

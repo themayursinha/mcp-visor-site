@@ -602,7 +602,14 @@ section.chapter { padding: 88px 0; }
 
 @media (max-width: 920px) {
   .hero { min-height: auto; padding-top: 8px; }
-  #visor-lens { position: relative; height: 42vh; min-height: 220px; max-height: 360px; }
+  #visor-lens {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    min-height: 280px;
+    max-height: min(62vh, 420px);
+  }
   .hero-veil {
     background: linear-gradient(180deg, color-mix(in srgb, var(--bg) 15%, transparent) 0%, color-mix(in srgb, var(--bg) 92%, transparent) 70%);
   }
