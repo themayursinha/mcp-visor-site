@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Same 1-day quarantine as min-release-age: Dependabot resolves with its
+    # own client (ignores .npmrc) and npm ci never re-resolves a lockfile.
+    cooldown:
+      default-days: 1
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
